@@ -6,7 +6,8 @@
         "@playwright/mcp@latest",
         "--executable-path", "/opt/pw-browsers/chromium-1194/chrome-linux/chrome",
         "--headless",
-        "--no-sandbox"
+        "--no-sandbox",
+        "--ignore-https-errors"
       ]
     }
   }

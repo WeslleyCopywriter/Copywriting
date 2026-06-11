@@ -1,0 +1,39 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]: 🌙
+    - heading "Tarô da Prosperidade" [level=1] [ref=e4]
+    - paragraph [ref=e5]: Desperte a abundância que já existe em você ✨
+  - main [ref=e6]:
+    - generic [ref=e7]:
+      - generic [ref=e9]: 🔥 1 dia cultivando sua prosperidade
+      - heading "Sua Carta do Dia" [level=2] [ref=e10]
+      - paragraph [ref=e11]: Uma mensagem de prosperidade escolhida especialmente para hoje. Toque na carta para revelar.
+      - generic [ref=e15] [cursor=pointer]:
+        - generic [ref=e16]:
+          - generic [ref=e17]: ✨
+          - generic [ref=e18]: PROSPERIDADE
+        - generic [ref=e19]:
+          - generic [ref=e20]: 🌙
+          - generic [ref=e21]: A Sacerdotisa
+          - generic [ref=e22]: Arcano Maior
+      - generic [ref=e35]:
+        - heading "🌙 A Sacerdotisa" [level=3] [ref=e36]
+        - generic [ref=e37]: Arcano Maior
+        - generic [ref=e38]: Sua intuição sabe o melhor caminho para o dinheiro. Ouça o silêncio antes de decidir.
+        - generic [ref=e39]: "✨ Conselho: Confie no seu pressentimento sobre uma oportunidade. Ele raramente erra."
+  - navigation [ref=e23]:
+    - button "🌙 Hoje" [ref=e24] [cursor=pointer]:
+      - generic [ref=e25]: 🌙
+      - text: Hoje
+    - button "🔮 Tiragens" [ref=e26] [cursor=pointer]:
+      - generic [ref=e27]: 🔮
+      - text: Tiragens
+    - button "🃏 Cartas" [ref=e28] [cursor=pointer]:
+      - generic [ref=e29]: 🃏
+      - text: Cartas
+    - button "✨ Afirmar" [ref=e30] [cursor=pointer]:
+      - generic [ref=e31]: ✨
+      - text: Afirmar
+    - button "📖 Diário" [ref=e32] [cursor=pointer]:
+      - generic [ref=e33]: 📖
+      - text: Diário

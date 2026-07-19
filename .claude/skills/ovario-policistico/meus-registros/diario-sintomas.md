@@ -21,7 +21,10 @@
 - Com a primeira menstruação depois do parto, voltaram **espinhas inflamadas e
   internas** (doloridas, "cegas"), que eu não tinha há anos.
 
-**Localização:** testa, cabeça (couro cabeludo/linha do cabelo) e queixo.
+**Localização:** queixo; e principalmente **extremidades** — couro cabeludo,
+cantos da testa, linha do cabelo e perto da orelha. (Padrão de linha do cabelo/
+extremidades sugere componente de sebo + produtos de cabelo/suor/atrito somando
+à parte hormonal — parte disso é manejável com higiene da região.)
 
 **Desde quando / frequência:** surgiram junto com a menstruação de julho/2026
 (primeira do pós-parto).

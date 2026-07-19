@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#ff9e7d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Diário IA">
+<title>Diário de Introdução Alimentar</title>
+<style>
+  :root{
+    --peach:#ff9e7d; --peach-dark:#f97a4d; --peach-soft:#ffece3;
+    --green:#7cc47f; --green-dark:#4f9e56; --green-soft:#e8f6e9;
+    --yellow:#ffcf5c; --yellow-soft:#fff6dd;
+    --red:#ef6f6f; --red-soft:#fde8e8;
+    --ink:#3a3230; --muted:#8a807b; --line:#efe7e2; --card:#fffdfc; --bg:#fbf5f1;
+    --shadow:0 6px 22px rgba(180,120,90,.10);
+    --radius:18px;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+    background:var(--bg); color:var(--ink);
+    padding-bottom:88px; -webkit-font-smoothing:antialiased;
+    max-width:640px; margin:0 auto; min-height:100vh;
+  }
+  h1,h2,h3{margin:0}
+  button{font-family:inherit; cursor:pointer; border:none; background:none; color:inherit}
+  input,select,textarea{font-family:inherit; font-size:16px}
+
+  /* Header */
+  header{
+    position:sticky; top:0; z-index:20;
+    background:linear-gradient(135deg,var(--peach),var(--peach-dark));
+    color:#fff; padding:18px 18px 16px; padding-top:calc(18px + env(safe-area-inset-top));
+    border-radius:0 0 24px 24px; box-shadow:var(--shadow);
+  }
+  .hd-top{display:flex; align-items:center; justify-content:space-between; gap:10px}
+  .hd-title{font-size:19px; font-weight:800; letter-spacing:-.2px; display:flex; align-items:center; gap:8px}
+  .hd-sub{font-size:13px; opacity:.92; margin-top:3px}
+  .hd-btn{background:rgba(255,255,255,.22); border-radius:12px; padding:8px 10px; font-size:13px; font-weight:700; color:#fff; display:flex; align-items:center; gap:5px}
+  .phase-pill{display:inline-block; margin-top:10px; background:rgba(255,255,255,.9); color:var(--peach-dark); font-weight:800; font-size:12.5px; padding:6px 12px; border-radius:999px}
+
+  /* Layout */
+  main{padding:16px 14px 10px}
+  .view{display:none; animation:fade .25s ease}
+  .view.active{display:block}
+  @keyframes fade{from{opacity:0; transform:translateY(6px)}to{opacity:1; transform:none}}
+
+  .card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); padding:16px; margin-bottom:14px}
+  .card h2{font-size:16px; font-weight:800; margin-bottom:4px; display:flex; align-items:center; gap:8px}
+  .card .lead{font-size:13px; color:var(--muted); margin-bottom:12px}
+  .section-label{font-size:12px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin:22px 4px 10px}
+
+  /* Form */
+  .field{margin-bottom:14px}
+  .field label{display:block; font-size:13px; font-weight:700; margin-bottom:7px; color:var(--ink)}
+  .field input[type=text], .field input[type=date], .field textarea, .field select{
+    width:100%; padding:12px 14px; border:1.5px solid var(--line); border-radius:12px; background:#fff; color:var(--ink); outline:none; transition:border-color .15s;
+  }
+  .field input:focus, .field textarea:focus, .field select:focus{border-color:var(--peach)}
+  .field textarea{resize:vertical; min-height:64px}
+
+  .chips{display:flex; flex-wrap:wrap; gap:8px}
+  .chip{padding:10px 14px; border-radius:12px; border:1.5px solid var(--line); background:#fff; font-size:14px; font-weight:700; color:var(--muted); display:flex; align-items:center; gap:6px; transition:all .12s}
+  .chip:active{transform:scale(.96)}
+  .chip.on{background:var(--peach-soft); border-color:var(--peach); color:var(--peach-dark)}
+  .chip.on.green{background:var(--green-soft); border-color:var(--green); color:var(--green-dark)}
+  .chip.on.red{background:var(--red-soft); border-color:var(--red); color:#c94b4b}
+  .chip.on.yellow{background:var(--yellow-soft); border-color:var(--yellow); color:#b98511}
+  .chip.big{font-size:15px; padding:12px 16px; flex:1; justify-content:center; min-width:0}
+
+  .toggle-row{display:flex; gap:10px}
+  .toggle{flex:1; text-align:center; padding:12px; border-radius:12px; border:1.5px solid var(--line); background:#fff; font-weight:700; font-size:14px; color:var(--muted); display:flex; align-items:center; justify-content:center; gap:7px}
+  .toggle.on{background:var(--red-soft); border-color:var(--red); color:#c94b4b}
+  .toggle.on.warn{background:var(--yellow-soft); border-color:var(--yellow); color:#b07d0a}
+
+  .btn-primary{width:100%; background:linear-gradient(135deg,var(--peach),var(--peach-dark)); color:#fff; font-weight:800; font-size:16px; padding:15px; border-radius:14px; box-shadow:0 6px 16px rgba(249,122,77,.35); display:flex; align-items:center; justify-content:center; gap:8px}
+  .btn-primary:active{transform:scale(.985)}
+  .btn-ghost{width:100%; background:#fff; border:1.5px solid var(--line); color:var(--ink); font-weight:700; padding:13px; border-radius:12px}
+
+  .suggest{display:flex; flex-wrap:wrap; gap:7px; margin-top:9px}
+  .suggest span{font-size:13px; padding:7px 11px; background:var(--green-soft); color:var(--green-dark); border-radius:999px; font-weight:700; border:1px solid #d5edd6}
+  .suggest span:active{transform:scale(.95)}
+
+  /* Diary list */
+  .day-group{margin-bottom:18px}
+  .day-head{font-size:13px; font-weight:800; color:var(--muted); margin:0 4px 9px; display:flex; align-items:center; gap:8px}
+  .day-head .count{background:var(--peach-soft); color:var(--peach-dark); font-size:11px; padding:2px 8px; border-radius:999px}
+  .entry{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:13px 14px; margin-bottom:9px; box-shadow:0 3px 12px rgba(180,120,90,.06); display:flex; gap:12px; align-items:flex-start}
+  .entry .emoji{font-size:26px; line-height:1; margin-top:1px}
+  .entry .body{flex:1; min-width:0}
+  .entry .food{font-weight:800; font-size:15.5px}
+  .entry .meta{font-size:12.5px; color:var(--muted); margin-top:3px; display:flex; flex-wrap:wrap; gap:6px 10px}
+  .entry .tag{display:inline-flex; align-items:center; gap:4px; font-weight:700}
+  .entry .note{font-size:13px; margin-top:7px; color:#6a615c; background:var(--bg); padding:7px 10px; border-radius:9px}
+  .entry .del{color:var(--muted); font-size:19px; padding:2px 4px; align-self:flex-start}
+  .badge-warn{background:var(--red-soft); color:#c94b4b; font-size:11px; font-weight:800; padding:2px 7px; border-radius:6px}
+
+  /* Foods */
+  .food-card{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:15px; margin-bottom:12px; box-shadow:0 3px 12px rgba(180,120,90,.06)}
+  .food-top{display:flex; align-items:center; justify-content:space-between; gap:10px}
+  .food-name{font-weight:800; font-size:17px; text-transform:capitalize; display:flex; align-items:center; gap:8px}
+  .verdict{font-size:11.5px; font-weight:800; padding:4px 10px; border-radius:999px; white-space:nowrap}
+  .v-aceito{background:var(--green-soft); color:var(--green-dark)}
+  .v-teste{background:var(--yellow-soft); color:#b07d0a}
+  .v-rejeitado{background:var(--red-soft); color:#c94b4b}
+  .v-novo{background:var(--peach-soft); color:var(--peach-dark)}
+  .prog-wrap{margin-top:13px}
+  .prog-label{display:flex; justify-content:space-between; font-size:12.5px; font-weight:700; color:var(--muted); margin-bottom:6px}
+  .prog-bar{height:11px; background:var(--line); border-radius:999px; overflow:hidden}
+  .prog-fill{height:100%; border-radius:999px; background:linear-gradient(90deg,var(--peach),var(--peach-dark)); transition:width .5s}
+  .prog-fill.done{background:linear-gradient(90deg,var(--green),var(--green-dark))}
+  .food-stats{display:flex; gap:8px; margin-top:13px}
+  .stat{flex:1; text-align:center; background:var(--bg); border-radius:11px; padding:9px 4px}
+  .stat .n{font-size:19px; font-weight:800; line-height:1}
+  .stat .l{font-size:10.5px; color:var(--muted); margin-top:3px; font-weight:700}
+  .food-dates{margin-top:12px; font-size:12.5px; color:var(--muted)}
+  .food-dates b{color:var(--ink)}
+  .food-dates .dlist{margin-top:5px; display:flex; flex-wrap:wrap; gap:6px}
+  .food-dates .dlist span{background:var(--peach-soft); color:var(--peach-dark); padding:3px 9px; border-radius:999px; font-weight:700; font-size:11.5px}
+
+  /* Plan */
+  .phase-card{border-radius:16px; padding:16px; margin-bottom:12px; border:1.5px solid var(--line); background:var(--card)}
+  .phase-card.now{border-color:var(--peach); background:var(--peach-soft)}
+  .phase-card .pc-head{display:flex; align-items:center; justify-content:space-between}
+  .phase-card .pc-title{font-weight:800; font-size:16px; display:flex; align-items:center; gap:8px}
+  .phase-card .pc-age{font-size:12.5px; color:var(--muted); font-weight:700}
+  .phase-card .pc-body{font-size:13.5px; color:#6a615c; margin-top:8px; line-height:1.5}
+  .now-tag{background:var(--peach-dark); color:#fff; font-size:11px; font-weight:800; padding:3px 9px; border-radius:999px}
+  .tip{display:flex; gap:10px; padding:11px 0; border-bottom:1px solid var(--line); font-size:13.5px; line-height:1.45}
+  .tip:last-child{border-bottom:none}
+  .tip .ti{font-size:20px}
+  .allergen-grid{display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-top:6px}
+  .allergen{display:flex; align-items:center; gap:9px; padding:11px; border:1.5px solid var(--line); border-radius:12px; background:#fff; font-size:13.5px; font-weight:700}
+  .allergen.done{background:var(--green-soft); border-color:var(--green); color:var(--green-dark)}
+  .allergen .ck{width:20px; height:20px; border-radius:6px; border:2px solid var(--line); display:flex; align-items:center; justify-content:center; font-size:13px; flex-shrink:0}
+  .allergen.done .ck{background:var(--green-dark); border-color:var(--green-dark); color:#fff}
+
+  .empty{text-align:center; padding:44px 20px; color:var(--muted)}
+  .empty .em{font-size:52px; margin-bottom:12px}
+  .empty .et{font-size:15px; font-weight:700; color:var(--ink)}
+  .empty .es{font-size:13.5px; margin-top:6px; line-height:1.5}
+
+  .kpis{display:flex; gap:10px; margin-bottom:14px}
+  .kpi{flex:1; background:var(--card); border:1px solid var(--line); border-radius:15px; padding:14px 8px; text-align:center; box-shadow:var(--shadow)}
+  .kpi .kn{font-size:24px; font-weight:800; line-height:1; color:var(--peach-dark)}
+  .kpi .kl{font-size:11px; color:var(--muted); font-weight:700; margin-top:5px}
+
+  /* Bottom nav */
+  nav{position:fixed; bottom:0; left:0; right:0; z-index:30; background:rgba(255,253,252,.96); backdrop-filter:blur(10px); border-top:1px solid var(--line); display:flex; padding:6px 6px calc(6px + env(safe-area-inset-bottom)); max-width:640px; margin:0 auto}
+  nav button{flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; padding:8px 2px; border-radius:12px; color:var(--muted); font-size:10.5px; font-weight:700}
+  nav button .ni{font-size:22px; line-height:1; transition:transform .15s}
+  nav button.active{color:var(--peach-dark)}
+  nav button.active .ni{transform:scale(1.12) translateY(-1px)}
+
+  /* Modal */
+  .modal-bg{position:fixed; inset:0; background:rgba(58,50,48,.5); z-index:50; display:none; align-items:flex-end; justify-content:center; padding:0}
+  .modal-bg.open{display:flex}
+  .modal{background:var(--bg); width:100%; max-width:640px; border-radius:22px 22px 0 0; padding:22px 18px calc(22px + env(safe-area-inset-bottom)); max-height:88vh; overflow-y:auto; animation:up .28s ease}
+  @keyframes up{from{transform:translateY(100%)}to{transform:none}}
+  .modal h3{font-size:17px; font-weight:800; margin-bottom:4px}
+  .modal .msub{font-size:13px; color:var(--muted); margin-bottom:16px}
+  .modal-close{position:absolute; top:14px; right:16px; font-size:26px; color:var(--muted)}
+
+  .toast{position:fixed; bottom:100px; left:50%; transform:translateX(-50%) translateY(20px); background:var(--ink); color:#fff; padding:12px 20px; border-radius:999px; font-size:14px; font-weight:700; z-index:60; opacity:0; transition:all .3s; pointer-events:none; box-shadow:0 8px 24px rgba(0,0,0,.25); white-space:nowrap}
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0)}
+  .fw{font-size:12px; color:var(--muted); text-align:center; padding:8px 20px 4px; line-height:1.5}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hd-top">
+    <div>
+      <div class="hd-title">🍼 <span id="babyTitle">Diário da Bebê</span></div>
+      <div class="hd-sub" id="babySub">Introdução alimentar</div>
+    </div>
+    <button class="hd-btn" onclick="openSettings()">⚙️ Ajustes</button>
+  </div>
+  <span class="phase-pill" id="phasePill">🍎 Fase atual</span>
+</header>
+
+<main>
+
+  <!-- ============ REGISTRAR ============ -->
+  <section class="view active" id="v-add">
+    <div class="card">
+      <h2>📝 Registrar oferta</h2>
+      <div class="lead">Anote cada vez que ofertar um alimento. Cada registro conta na regra das ofertas.</div>
+
+      <div class="field">
+        <label>📅 Data</label>
+        <input type="date" id="f-date">
+      </div>
+
+      <div class="field">
+        <label>🕐 Refeição</label>
+        <div class="chips" id="f-meal">
+          <button class="chip" data-v="Manhã">🌅 Manhã</button>
+          <button class="chip" data-v="Tarde">☀️ Tarde</button>
+          <button class="chip" data-v="Almoço">🍽️ Almoço</button>
+          <button class="chip" data-v="Jantar">🌙 Jantar</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>🍓 Alimento</label>
+        <input type="text" id="f-food" placeholder="Ex.: banana, maçã, abóbora..." autocomplete="off" list="foodlist">
+        <datalist id="foodlist"></datalist>
+        <div class="suggest" id="f-suggest"></div>
+      </div>
+
+      <div class="field">
+        <label>🥄 Como foi ofertado</label>
+        <div class="chips" id="f-form">
+          <button class="chip big" data-v="Papa">🥣 Papa / Amassado</button>
+          <button class="chip big" data-v="Inteiro">✋ Inteiro (BLW)</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>😋 Reação dela</label>
+        <div class="chips" id="f-reaction">
+          <button class="chip big" data-v="Gostou" data-cls="green">😋 Gostou</button>
+          <button class="chip big" data-v="Neutro" data-cls="yellow">😐 Neutro</button>
+          <button class="chip big" data-v="Não gostou" data-cls="red">😖 Não gostou</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>⚠️ Aconteceu algo?</label>
+        <div class="toggle-row">
+          <button class="toggle" id="f-choked">😰 Engasgou</button>
+          <button class="toggle" id="f-allergy">🔴 Reação alérgica</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>💬 Observações (opcional)</label>
+        <textarea id="f-notes" placeholder="Ex.: fez careta no começo mas depois aceitou; textura mais mole..."></textarea>
+      </div>
+
+      <button class="btn-primary" onclick="saveEntry()">💾 Salvar registro</button>
+    </div>
+  </section>
+
+  <!-- ============ DIÁRIO ============ -->
+  <section class="view" id="v-diary">
+    <div class="kpis" id="diaryKpis"></div>
+    <div id="diaryList"></div>
+  </section>
+
+  <!-- ============ ALIMENTOS ============ -->
+  <section class="view" id="v-foods">
+    <div class="card" style="background:var(--peach-soft); border-color:var(--peach)">
+      <h2>🔢 Regra das ofertas</h2>
+      <div class="lead" style="color:#a5674a; margin-bottom:0">Um alimento só é considerado "recusado" depois de ser ofertado <b id="targetText">17</b> vezes sem aceitação. Antes disso, continue tentando! O paladar do bebê muda a cada exposição.</div>
+    </div>
+    <div id="foodsList"></div>
+  </section>
+
+  <!-- ============ PLANO ============ -->
+  <section class="view" id="v-plan">
+    <div class="section-label">📆 Cronograma por idade</div>
+    <div id="planPhases"></div>
+
+    <div class="section-label">🥚 Alergênicos introduzidos</div>
+    <div class="card">
+      <div class="lead">Marque os principais alergênicos conforme forem introduzidos — um de cada vez, de manhã, e observe por 2-3 dias.</div>
+      <div class="allergen-grid" id="allergenGrid"></div>
+    </div>
+
+    <div class="section-label">💡 Dicas de segurança</div>
+    <div class="card" id="tipsCard"></div>
+  </section>
+
+</main>
+
+<nav>
+  <button class="active" data-view="v-add" onclick="nav('v-add',this)"><span class="ni">➕</span>Registrar</button>
+  <button data-view="v-diary" onclick="nav('v-diary',this)"><span class="ni">📔</span>Diário</button>
+  <button data-view="v-foods" onclick="nav('v-foods',this)"><span class="ni">🍎</span>Alimentos</button>
+  <button data-view="v-plan" onclick="nav('v-plan',this)"><span class="ni">📆</span>Plano</button>
+</nav>
+
+<!-- Settings modal -->
+<div class="modal-bg" id="settingsModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeSettings()">×</button>
+    <h3>⚙️ Ajustes</h3>
+    <div class="msub">Configurações do diário e backup dos dados.</div>
+
+    <div class="field">
+      <label>👶 Nome da bebê</label>
+      <input type="text" id="s-name" placeholder="Ex.: Helena">
+    </div>
+    <div class="field">
+      <label>🎂 Data de nascimento</label>
+      <input type="date" id="s-birth">
+    </div>
+    <div class="field">
+      <label>🎯 Meta de ofertas (regra das tentativas)</label>
+      <input type="text" inputmode="numeric" id="s-target" placeholder="17">
+    </div>
+    <button class="btn-primary" onclick="saveSettings()">Salvar ajustes</button>
+
+    <div class="section-label" style="margin-left:0">💾 Backup dos dados</div>
+    <div class="card" style="margin-bottom:10px">
+      <div class="lead">Seus dados ficam salvos só neste aparelho. Exporte de vez em quando pra não perder — e pra mostrar ao pediatra.</div>
+      <button class="btn-ghost" style="margin-bottom:9px" onclick="exportData()">⬇️ Exportar backup (arquivo)</button>
+      <button class="btn-ghost" style="margin-bottom:9px" onclick="document.getElementById('importFile').click()">⬆️ Importar backup</button>
+      <input type="file" id="importFile" accept="application/json" style="display:none" onchange="importData(event)">
+      <button class="btn-ghost" style="color:#c94b4b; border-color:#f3cccc" onclick="wipeData()">🗑️ Apagar tudo</button>
+    </div>
+    <div class="fw">Feito com carinho 🧡 para acompanhar cada descoberta.</div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============ ESTADO ============ */
+var LS_KEY = 'ia_diario_v1';
+var DB = load();
+
+function load(){
+  try{
+    var raw = localStorage.getItem(LS_KEY);
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
+  return { version:1, baby:{name:'', birth:''}, settings:{target:17}, entries:[], allergens:{} };
+}
+function save(){ localStorage.setItem(LS_KEY, JSON.stringify(DB)); }
+
+/* ============ ALERGÊNICOS ============ */
+var ALLERGENS = [
+  {id:'ovo', label:'🥚 Ovo'},
+  {id:'amendoim', label:'🥜 Amendoim'},
+  {id:'castanhas', label:'🌰 Castanhas'},
+  {id:'leite', label:'🥛 Leite / laticínios'},
+  {id:'trigo', label:'🌾 Trigo / glúten'},
+  {id:'peixe', label:'🐟 Peixe'},
+  {id:'frutos_mar', label:'🦐 Frutos do mar'},
+  {id:'soja', label:'🫘 Soja'},
+  {id:'gergelim', label:'⚪ Gergelim'}
+];
+
+/* ============ SUGESTÕES DE ALIMENTOS ============ */
+var FOOD_SUGGEST = ['Banana','Maçã','Mamão','Pera','Manga','Abacate','Melancia','Melão','Ameixa','Pêssego','Laranja lima','Morango'];
+
+/* ============ FASES ============ */
+var PHASES = [
+  {id:0, title:'🍎 Frutas', age:'5 meses', meals:'Manhã e tarde — 2 refeições', body:'Só frutas, oferecidas de manhã e à tarde. Comece com uma fruta por vez, amassada ou em pedaço seguro (BLW). Observe reações e textura.'},
+  {id:1, title:'🍽️ Frutas + Almoço', age:'~5 meses e meio', meals:'Manhã, almoço e tarde', body:'Entra o almoço: legumes, tubérculos, proteína e um cereal. Continue as frutas nos lanches. Amasse com o garfo, sem peneirar, e nada de sal.'},
+  {id:2, title:'🌙 + Jantar', age:'7 meses', meals:'Manhã, almoço, tarde e jantar', body:'Inclui o jantar, completando as refeições principais. Aumente aos poucos a variedade e a consistência dos alimentos.'}
+];
+
+/* ============ DICAS ============ */
+var TIPS = [
+  {i:'🚫', t:'<b>Nada de mel</b> antes de 1 ano (risco de botulismo).'},
+  {i:'🧂', t:'<b>Sem sal e sem açúcar</b> — o paladar está se formando.'},
+  {i:'👀', t:'<b>Sempre supervisionada</b> ao comer. Nunca deixe sozinha.'},
+  {i:'😮', t:'<b>Engasgo x GAG:</b> ânsia (GAG) é normal e faz parte do aprendizado; engasgo real (sem som, roxinha) é emergência.'},
+  {i:'🥜', t:'<b>Alergênicos cedo:</b> ovo, amendoim etc. podem ser introduzidos já no começo, um por vez e pela manhã.'},
+  {i:'💧', t:'<b>Água</b> em pequenos goles pode ser oferecida junto das refeições.'},
+  {i:'📏', t:'<b>Corte seguro:</b> nada redondo e firme inteiro (uva, tomate cereja) — corte no comprimento.'},
+  {i:'⏳', t:'<b>Paciência:</b> recusar não é "não gostar". Pode levar muitas ofertas até aceitar.'}
+];
+
+/* ============ HELPERS ============ */
+function norm(s){ return (s||'').trim().toLowerCase(); }
+function cap(s){ return s ? s.charAt(0).toUpperCase()+s.slice(1) : s; }
+function todayISO(){ var d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function fmtDate(iso){
+  if(!iso) return '';
+  var p=iso.split('-'); return p[2]+'/'+p[1]+'/'+p[0];
+}
+function fmtDateLong(iso){
+  var dias=['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+  var meses=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+  var p=iso.split('-'); var d=new Date(parseInt(p[0]),parseInt(p[1])-1,parseInt(p[2]));
+  var t=todayISO();
+  if(iso===t) return 'Hoje · '+p[2]+'/'+meses[parseInt(p[1])-1];
+  return dias[d.getDay()]+' · '+p[2]+'/'+meses[parseInt(p[1])-1];
+}
+function uid(){ return 'e'+Date.now()+Math.floor(Math.random()*9999); }
+function reactionEmoji(r){ return r==='Gostou'?'😋':r==='Não gostou'?'😖':r==='Neutro'?'😐':'🍽️'; }
+
+function toast(msg){
+  var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
+  clearTimeout(t._tm); t._tm=setTimeout(function(){t.classList.remove('show')},1900);
+}
+
+/* ============ NAVEGAÇÃO ============ */
+function nav(view, btn){
+  document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active')});
+  document.getElementById(view).classList.add('active');
+  document.querySelectorAll('nav button').forEach(function(b){b.classList.remove('active')});
+  if(btn) btn.classList.add('active');
+  window.scrollTo(0,0);
+  if(view==='v-diary') renderDiary();
+  if(view==='v-foods') renderFoods();
+  if(view==='v-plan') renderPlan();
+}
+
+/* ============ SELEÇÃO DE CHIPS ============ */
+function initChips(){
+  document.querySelectorAll('#f-meal .chip, #f-form .chip, #f-reaction .chip').forEach(function(chip){
+    chip.addEventListener('click', function(){
+      var parent=chip.parentElement;
+      parent.querySelectorAll('.chip').forEach(function(c){ c.classList.remove('on','green','red','yellow'); });
+      chip.classList.add('on');
+      var cls=chip.getAttribute('data-cls'); if(cls) chip.classList.add(cls);
+    });
+  });
+  document.getElementById('f-choked').addEventListener('click',function(){ this.classList.toggle('on'); });
+  document.getElementById('f-allergy').addEventListener('click',function(){ this.classList.toggle('on'); });
+}
+function getChip(sel){ var el=document.querySelector(sel+' .chip.on'); return el?el.getAttribute('data-v'):''; }
+
+/* ============ SALVAR REGISTRO ============ */
+function saveEntry(){
+  var food=norm(document.getElementById('f-food').value);
+  var meal=getChip('#f-meal');
+  var form=getChip('#f-form');
+  var reaction=getChip('#f-reaction');
+  var date=document.getElementById('f-date').value || todayISO();
+
+  if(!food){ toast('✏️ Escreva o alimento'); return; }
+  if(!meal){ toast('🕐 Escolha a refeição'); return; }
+  if(!reaction){ toast('😋 Marque a reação'); return; }
+
+  DB.entries.push({
+    id:uid(), date:date, meal:meal, food:food, form:form||'—', reaction:reaction,
+    choked:document.getElementById('f-choked').classList.contains('on'),
+    allergy:document.getElementById('f-allergy').classList.contains('on'),
+    notes:document.getElementById('f-notes').value.trim(),
+    createdAt:Date.now()
+  });
+  save();
+  resetForm();
+  refreshSuggest();
+  toast('💾 Registrado! '+cap(food));
+}
+function resetForm(){
+  document.getElementById('f-food').value='';
+  document.getElementById('f-notes').value='';
+  document.querySelectorAll('#f-form .chip, #f-reaction .chip').forEach(function(c){c.classList.remove('on','green','red','yellow')});
+  document.getElementById('f-choked').classList.remove('on');
+  document.getElementById('f-allergy').classList.remove('on');
+}
+
+/* ============ SUGESTÕES ============ */
+function refreshSuggest(){
+  var wrap=document.getElementById('f-suggest');
+  var used={}; DB.entries.forEach(function(e){used[e.food]=(used[e.food]||0)+1});
+  // Frutas ainda não muito ofertadas primeiro, depois sugestões padrão
+  var recent=Object.keys(used).sort(function(a,b){return used[b]-used[a]}).slice(0,6);
+  var picks=[];
+  recent.forEach(function(f){ if(picks.length<8 && picks.indexOf(f)<0) picks.push(f); });
+  FOOD_SUGGEST.forEach(function(f){ if(picks.length<10 && picks.map(norm).indexOf(norm(f))<0) picks.push(f); });
+  wrap.innerHTML='';
+  picks.forEach(function(f){
+    var s=document.createElement('span'); s.textContent=cap(f);
+    s.onclick=function(){ document.getElementById('f-food').value=cap(f); };
+    wrap.appendChild(s);
+  });
+  // datalist
+  var dl=document.getElementById('foodlist'); dl.innerHTML='';
+  Object.keys(used).forEach(function(f){ var o=document.createElement('option'); o.value=cap(f); dl.appendChild(o); });
+}
+
+/* ============ DIÁRIO ============ */
+function renderDiary(){
+  var kpiWrap=document.getElementById('diaryKpis');
+  var list=document.getElementById('diaryList');
+  var entries=DB.entries.slice().sort(function(a,b){ return b.date<a.date?-1:b.date>a.date?1:b.createdAt-a.createdAt; });
+
+  var foods={}; DB.entries.forEach(function(e){foods[e.food]=1});
+  var liked=DB.entries.filter(function(e){return e.reaction==='Gostou'}).length;
+  kpiWrap.innerHTML =
+    kpi(DB.entries.length,'Registros')+
+    kpi(Object.keys(foods).length,'Alimentos')+
+    kpi(liked,'Gostou 😋');
+
+  if(!entries.length){
+    list.innerHTML=empty('📔','Diário vazio','Registre a primeira oferta na aba "Registrar" e ela aparece aqui, organizada por dia.');
+    return;
+  }
+
+  // agrupa por data
+  var groups={}; var order=[];
+  entries.forEach(function(e){ if(!groups[e.date]){groups[e.date]=[]; order.push(e.date);} groups[e.date].push(e); });
+
+  var html='';
+  order.forEach(function(date){
+    html+='<div class="day-group"><div class="day-head">'+fmtDateLong(date)+' <span class="count">'+groups[date].length+'</span></div>';
+    groups[date].forEach(function(e){ html+=entryHTML(e); });
+    html+='</div>';
+  });
+  list.innerHTML=html;
+}
+function entryHTML(e){
+  var warn = (e.choked?'<span class="badge-warn">😰 Engasgou</span>':'') + (e.allergy?' <span class="badge-warn">🔴 Alergia</span>':'');
+  return '<div class="entry">'+
+    '<div class="emoji">'+reactionEmoji(e.reaction)+'</div>'+
+    '<div class="body">'+
+      '<div class="food">'+cap(e.food)+' '+warn+'</div>'+
+      '<div class="meta">'+
+        '<span class="tag">'+mealIcon(e.meal)+' '+e.meal+'</span>'+
+        '<span class="tag">'+(e.form==='Inteiro'?'✋':'🥣')+' '+e.form+'</span>'+
+        '<span class="tag">'+reactionEmoji(e.reaction)+' '+e.reaction+'</span>'+
+      '</div>'+
+      (e.notes?'<div class="note">'+escapeHTML(e.notes)+'</div>':'')+
+    '</div>'+
+    '<button class="del" onclick="delEntry(\''+e.id+'\')">🗑️</button>'+
+  '</div>';
+}
+function mealIcon(m){ return m==='Manhã'?'🌅':m==='Tarde'?'☀️':m==='Almoço'?'🍽️':m==='Jantar'?'🌙':'🕐'; }
+function delEntry(id){
+  if(!confirm('Apagar este registro?')) return;
+  DB.entries=DB.entries.filter(function(e){return e.id!==id}); save(); renderDiary(); refreshSuggest();
+  toast('Registro apagado');
+}
+
+/* ============ ALIMENTOS (regra das ofertas) ============ */
+function renderFoods(){
+  document.getElementById('targetText').textContent=DB.settings.target;
+  var wrap=document.getElementById('foodsList');
+  var map={};
+  DB.entries.forEach(function(e){
+    if(!map[e.food]) map[e.food]={name:e.food, total:0, gostou:0, nao:0, neutro:0, choked:0, dates:{}};
+    var m=map[e.food]; m.total++;
+    if(e.reaction==='Gostou') m.gostou++;
+    else if(e.reaction==='Não gostou') m.nao++;
+    else m.neutro++;
+    if(e.choked) m.choked++;
+    m.dates[e.date]=1;
+  });
+  var foods=Object.keys(map).map(function(k){return map[k]});
+  foods.sort(function(a,b){ return b.total-a.total; });
+
+  if(!foods.length){
+    wrap.innerHTML=empty('🍎','Nenhum alimento ainda','Conforme você registra as ofertas, cada alimento ganha aqui um cartão com a contagem e o progresso rumo às '+DB.settings.target+' tentativas.');
+    return;
+  }
+
+  var target=DB.settings.target;
+  wrap.innerHTML=foods.map(function(m){
+    var dates=Object.keys(m.dates).sort();
+    var pct=Math.min(100, Math.round(m.total/target*100));
+    var accepted=m.gostou>0;
+    var verdict, vclass;
+    if(accepted){ verdict='✅ Aceito'; vclass='v-aceito'; }
+    else if(m.total>=target){ verdict='❌ Recusado ('+m.total+'x)'; vclass='v-rejeitado'; }
+    else if(m.total>=1){ verdict='🔄 Em teste'; vclass='v-teste'; }
+    else { verdict='🆕 Novo'; vclass='v-novo'; }
+
+    var datePills=dates.map(function(d){return '<span>'+fmtDate(d)+'</span>'}).join('');
+
+    return '<div class="food-card">'+
+      '<div class="food-top">'+
+        '<div class="food-name">'+foodEmoji(m.name)+' '+cap(m.name)+'</div>'+
+        '<span class="verdict '+vclass+'">'+verdict+'</span>'+
+      '</div>'+
+      '<div class="prog-wrap">'+
+        '<div class="prog-label"><span>'+(accepted?'Já foi aceito! 🎉':'Ofertas até o veredito')+'</span><span>'+m.total+' / '+target+'</span></div>'+
+        '<div class="prog-bar"><div class="prog-fill'+(accepted||m.total>=target?' done':'')+'" style="width:'+Math.max(pct,4)+'%"></div></div>'+
+      '</div>'+
+      '<div class="food-stats">'+
+        '<div class="stat"><div class="n" style="color:var(--green-dark)">'+m.gostou+'</div><div class="l">😋 Gostou</div></div>'+
+        '<div class="stat"><div class="n" style="color:#b07d0a">'+m.neutro+'</div><div class="l">😐 Neutro</div></div>'+
+        '<div class="stat"><div class="n" style="color:#c94b4b">'+m.nao+'</div><div class="l">😖 Não</div></div>'+
+        (m.choked?'<div class="stat"><div class="n" style="color:#c94b4b">'+m.choked+'</div><div class="l">😰 Engasgo</div></div>':'')+
+      '</div>'+
+      '<div class="food-dates"><b>Ofertado em '+dates.length+' dia(s):</b><div class="dlist">'+datePills+'</div></div>'+
+    '</div>';
+  }).join('');
+}
+function foodEmoji(name){
+  var n=norm(name); var map={banana:'🍌',maçã:'🍎',maca:'🍎',mamão:'🥭',mamao:'🥭',manga:'🥭',pera:'🍐',abacate:'🥑',melancia:'🍉',melão:'🍈',melao:'🍈',morango:'🍓',laranja:'🍊',uva:'🍇',pêssego:'🍑',pessego:'🍑',abóbora:'🎃',abobora:'🎃',batata:'🥔',cenoura:'🥕',ovo:'🥚',brócolis:'🥦',brocolis:'🥦',tomate:'🍅',milho:'🌽',ameixa:'🫐'};
+  for(var k in map){ if(n.indexOf(k)>=0) return map[k]; }
+  return '🍽️';
+}
+
+/* ============ PLANO ============ */
+function currentPhase(){
+  // baseado na idade se houver data de nascimento
+  if(DB.baby.birth){
+    var b=new Date(DB.baby.birth); var now=new Date();
+    var months=(now.getFullYear()-b.getFullYear())*12+(now.getMonth()-b.getMonth());
+    if(now.getDate()<b.getDate()) months--;
+    if(months>=7) return 2;
+    // 5 meses e ~1 semana em diante começa fase 0; fase 1 a partir de ~5.5
+    var days=Math.floor((now-b)/86400000);
+    if(days>=170) return 1; // ~5 meses e 3 semanas
+    return 0;
+  }
+  return 0;
+}
+function renderPlan(){
+  var cur=currentPhase();
+  document.getElementById('planPhases').innerHTML=PHASES.map(function(p){
+    var isNow=p.id===cur;
+    return '<div class="phase-card'+(isNow?' now':'')+'">'+
+      '<div class="pc-head"><div class="pc-title">'+p.title+'</div>'+(isNow?'<span class="now-tag">AGORA</span>':'<span class="pc-age">'+p.age+'</span>')+'</div>'+
+      '<div class="pc-age" style="margin-top:4px">📅 '+p.age+' · '+p.meals+'</div>'+
+      '<div class="pc-body">'+p.body+'</div>'+
+    '</div>';
+  }).join('');
+
+  // alergênicos
+  var ag=document.getElementById('allergenGrid');
+  ag.innerHTML=ALLERGENS.map(function(a){
+    var done=!!DB.allergens[a.id];
+    return '<div class="allergen'+(done?' done':'')+'" onclick="toggleAllergen(\''+a.id+'\')"><div class="ck">'+(done?'✓':'')+'</div>'+a.label+'</div>';
+  }).join('');
+
+  document.getElementById('tipsCard').innerHTML=TIPS.map(function(t){
+    return '<div class="tip"><div class="ti">'+t.i+'</div><div>'+t.t+'</div></div>';
+  }).join('');
+}
+function toggleAllergen(id){
+  if(DB.allergens[id]) delete DB.allergens[id]; else DB.allergens[id]=todayISO();
+  save(); renderPlan();
+}
+
+/* ============ AJUSTES / BACKUP ============ */
+function openSettings(){
+  document.getElementById('s-name').value=DB.baby.name||'';
+  document.getElementById('s-birth').value=DB.baby.birth||'';
+  document.getElementById('s-target').value=DB.settings.target||17;
+  document.getElementById('settingsModal').classList.add('open');
+}
+function closeSettings(){ document.getElementById('settingsModal').classList.remove('open'); }
+function saveSettings(){
+  DB.baby.name=document.getElementById('s-name').value.trim();
+  DB.baby.birth=document.getElementById('s-birth').value;
+  var t=parseInt(document.getElementById('s-target').value); DB.settings.target=(t&&t>0)?t:17;
+  save(); applyHeader(); closeSettings(); toast('✅ Ajustes salvos');
+}
+function applyHeader(){
+  var name=DB.baby.name;
+  document.getElementById('babyTitle').textContent=name?('Diário da '+name):'Diário da Bebê';
+  var pill=document.getElementById('phasePill');
+  var p=PHASES[currentPhase()];
+  var ageTxt='';
+  if(DB.baby.birth){
+    var b=new Date(DB.baby.birth), now=new Date();
+    var months=(now.getFullYear()-b.getFullYear())*12+(now.getMonth()-b.getMonth());
+    if(now.getDate()<b.getDate()) months--;
+    var days=Math.floor((now-b)/86400000);
+    var weeks=Math.floor((days-months*30.44)/7);
+    ageTxt=months+' meses'+(weeks>0?' e '+weeks+' sem':'');
+    document.getElementById('babySub').textContent='Introdução alimentar · '+ageTxt;
+  }
+  pill.textContent=p.title+' · '+p.meals;
+}
+
+function exportData(){
+  var data=JSON.stringify(DB,null,2);
+  var blob=new Blob([data],{type:'application/json'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  var name=(DB.baby.name||'bebe').toLowerCase().replace(/\s+/g,'-');
+  a.href=url; a.download='diario-'+name+'-'+todayISO()+'.json'; a.click();
+  URL.revokeObjectURL(url);
+  toast('⬇️ Backup exportado');
+}
+function importData(ev){
+  var file=ev.target.files[0]; if(!file) return;
+  var r=new FileReader();
+  r.onload=function(){
+    try{
+      var d=JSON.parse(r.result);
+      if(!d.entries) throw 'inválido';
+      if(!confirm('Substituir os dados atuais pelo backup? ('+d.entries.length+' registros)')) return;
+      DB=d; if(!DB.allergens) DB.allergens={}; if(!DB.settings) DB.settings={target:17};
+      save(); applyHeader(); refreshSuggest(); nav('v-diary',document.querySelector('[data-view=v-diary]'));
+      toast('⬆️ Backup importado');
+    }catch(e){ toast('❌ Arquivo inválido'); }
+  };
+  r.readAsText(file); ev.target.value='';
+}
+function wipeData(){
+  if(!confirm('Apagar TODOS os dados? Isso não pode ser desfeito. Exporte um backup antes!')) return;
+  if(!confirm('Tem certeza mesmo? Todos os registros serão perdidos.')) return;
+  DB={ version:1, baby:{name:'', birth:''}, settings:{target:17}, entries:[], allergens:{} };
+  save(); applyHeader(); refreshSuggest(); closeSettings();
+  nav('v-add',document.querySelector('[data-view=v-add]'));
+  toast('Dados apagados');
+}
+
+/* ============ UTIL ============ */
+function kpi(n,l){ return '<div class="kpi"><div class="kn">'+n+'</div><div class="kl">'+l+'</div></div>'; }
+function empty(em,t,s){ return '<div class="empty"><div class="em">'+em+'</div><div class="et">'+t+'</div><div class="es">'+s+'</div></div>'; }
+function escapeHTML(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+/* ============ INIT ============ */
+document.getElementById('f-date').value=todayISO();
+initChips();
+refreshSuggest();
+applyHeader();
+document.getElementById('settingsModal').addEventListener('click',function(e){ if(e.target===this) closeSettings(); });
+</script>
+</body>
+</html>

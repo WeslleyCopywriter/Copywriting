@@ -1,0 +1,4 @@
+# Artefatos de sessão do Playwright MCP (logs/snapshots de teste)
+.playwright-mcp/*.log
+.playwright-mcp/*.yml
+.playwright-mcp/*.png

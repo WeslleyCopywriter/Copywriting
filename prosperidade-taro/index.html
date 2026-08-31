@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tarô da Prosperidade ✨ Abundância e Riqueza</title>
+<style>
+  :root{
+    --noite:#1a1033;
+    --noite2:#2a1a4f;
+    --ametista:#6d3bbf;
+    --ametista-claro:#9d6ee0;
+    --ouro:#e9c46a;
+    --ouro-forte:#d4a93f;
+    --creme:#f8f1e4;
+    --texto:#f3ecff;
+    --texto-suave:#d8cdf0;
+    --sombra:0 10px 40px rgba(0,0,0,.45);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    background:radial-gradient(ellipse at top,#2a1a4f 0%,#1a1033 55%,#120a26 100%);
+    color:var(--texto);
+    min-height:100vh;
+    font-size:18px;
+    line-height:1.6;
+    padding-bottom:90px;
+  }
+  h1,h2,h3,.serif{font-family:Georgia,"Times New Roman",serif}
+
+  /* estrelinhas de fundo */
+  .ceu{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+  .ceu span{position:absolute;background:var(--ouro);border-radius:50%;opacity:.5;animation:brilho 3s infinite ease-in-out}
+  @keyframes brilho{0%,100%{opacity:.15;transform:scale(.8)}50%{opacity:.7;transform:scale(1.2)}}
+
+  header{
+    text-align:center;padding:34px 20px 14px;position:relative;z-index:1;
+  }
+  header .lua{font-size:42px;display:block;margin-bottom:4px}
+  header h1{
+    font-size:30px;font-weight:700;
+    background:linear-gradient(90deg,var(--ouro),#fff3cf,var(--ouro-forte));
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+    letter-spacing:.5px;
+  }
+  header p{color:var(--texto-suave);font-size:16px;margin-top:6px}
+
+  main{max-width:760px;margin:0 auto;padding:10px 18px 40px;position:relative;z-index:1}
+  section{display:none;animation:aparece .5s ease}
+  section.ativa{display:block}
+  @keyframes aparece{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+  .titulo-secao{font-size:24px;color:var(--ouro);margin:10px 0 4px;text-align:center}
+  .sub{color:var(--texto-suave);text-align:center;margin-bottom:22px;font-size:16px}
+
+  /* botoes */
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    background:linear-gradient(135deg,var(--ouro),var(--ouro-forte));
+    color:#3a2400;border:none;border-radius:40px;
+    padding:15px 30px;font-size:18px;font-weight:700;cursor:pointer;
+    box-shadow:0 6px 22px rgba(212,169,63,.4);transition:transform .15s, box-shadow .15s;
+    font-family:inherit;
+  }
+  .btn:hover{transform:translateY(-2px);box-shadow:0 9px 28px rgba(212,169,63,.55)}
+  .btn:active{transform:translateY(0)}
+  .btn.sec{background:transparent;color:var(--ouro);border:2px solid var(--ouro);box-shadow:none}
+  .centro{text-align:center;margin:18px 0}
+
+  /* carta */
+  .carta-area{display:flex;flex-wrap:wrap;gap:18px;justify-content:center;margin-top:10px}
+  .carta{
+    width:190px;height:300px;perspective:1200px;cursor:pointer;
+  }
+  .carta-inner{position:relative;width:100%;height:100%;transition:transform .8s;transform-style:preserve-3d}
+  .carta.virada .carta-inner{transform:rotateY(180deg)}
+  .face{
+    position:absolute;inset:0;backface-visibility:hidden;border-radius:16px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    box-shadow:var(--sombra);padding:14px;text-align:center;
+  }
+  .verso{
+    background:
+      repeating-linear-gradient(45deg,#3a2470 0 10px,#2e1c5c 10px 20px);
+    border:3px solid var(--ouro);
+  }
+  .verso .selo{font-size:64px;filter:drop-shadow(0 0 10px rgba(233,196,106,.8))}
+  .verso small{position:absolute;bottom:16px;color:var(--ouro);letter-spacing:2px;font-size:12px}
+  .frente{
+    background:linear-gradient(160deg,#fbf4e2,#efe2c4);
+    border:3px solid var(--ouro-forte);color:#3a2400;transform:rotateY(180deg);
+  }
+  .frente .simbolo{font-size:70px;line-height:1;margin-bottom:6px}
+  .frente .nome{font-family:Georgia,serif;font-weight:700;font-size:19px;color:#5a3c00}
+  .frente .naipe{font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:#9a7a2a;margin-top:2px}
+  .pos-label{font-size:14px;color:var(--ouro);text-align:center;margin-bottom:8px;font-weight:700;letter-spacing:.5px}
+  .col{display:flex;flex-direction:column;align-items:center}
+
+  /* leitura / significado */
+  .leitura{
+    background:rgba(255,255,255,.06);border:1px solid rgba(233,196,106,.3);
+    border-radius:16px;padding:20px 22px;margin-top:18px;
+  }
+  .leitura h3{color:var(--ouro);font-size:21px;margin-bottom:6px}
+  .leitura .sig{margin-bottom:14px}
+  .leitura .conselho{
+    background:rgba(233,196,106,.12);border-left:4px solid var(--ouro);
+    padding:12px 16px;border-radius:8px;font-style:italic;color:#fff
+  }
+  .leitura .conselho b{font-style:normal;color:var(--ouro)}
+
+  /* biblioteca */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;margin-top:10px}
+  .mini{
+    background:rgba(255,255,255,.06);border:1px solid rgba(233,196,106,.25);
+    border-radius:14px;padding:16px 10px;text-align:center;cursor:pointer;transition:.2s
+  }
+  .mini:hover{background:rgba(233,196,106,.15);transform:translateY(-3px)}
+  .mini .e{font-size:40px}
+  .mini .n{font-size:14px;font-weight:700;margin-top:6px;color:var(--texto)}
+
+  /* afirmacoes */
+  .afirma{
+    background:linear-gradient(135deg,rgba(109,59,191,.4),rgba(157,110,224,.25));
+    border:1px solid rgba(233,196,106,.4);border-radius:20px;
+    padding:34px 26px;text-align:center;margin-top:14px;
+  }
+  .afirma .aspas{font-size:54px;color:var(--ouro);line-height:.4;font-family:Georgia,serif}
+  .afirma p{font-size:23px;font-family:Georgia,serif;margin:10px 0 4px;color:#fff}
+
+  /* diario */
+  .diario-form textarea{
+    width:100%;min-height:90px;border-radius:12px;border:1px solid rgba(233,196,106,.4);
+    background:rgba(255,255,255,.07);color:#fff;padding:14px;font-size:17px;font-family:inherit;resize:vertical
+  }
+  .entrada{
+    background:rgba(255,255,255,.06);border:1px solid rgba(233,196,106,.25);
+    border-radius:12px;padding:14px 16px;margin-top:12px
+  }
+  .entrada .data{font-size:13px;color:var(--ouro)}
+  .entrada .corpo{margin-top:4px}
+  .vazio{text-align:center;color:var(--texto-suave);margin-top:20px;font-style:italic}
+  .apagar{background:none;border:none;color:#e0859a;cursor:pointer;font-size:14px;float:right}
+
+  /* nav inferior */
+  nav{
+    position:fixed;bottom:0;left:0;right:0;z-index:10;
+    background:rgba(18,10,38,.92);backdrop-filter:blur(10px);
+    border-top:1px solid rgba(233,196,106,.3);
+    display:flex;justify-content:space-around;padding:6px 4px 8px;
+  }
+  nav button{
+    background:none;border:none;color:var(--texto-suave);cursor:pointer;
+    display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;
+    padding:6px 4px;border-radius:10px;flex:1;font-family:inherit;transition:.2s
+  }
+  nav button .ic{font-size:22px}
+  nav button.on{color:var(--ouro)}
+  nav button.on .ic{transform:scale(1.15)}
+
+  .streak{
+    text-align:center;background:rgba(233,196,106,.12);border:1px solid rgba(233,196,106,.3);
+    border-radius:30px;padding:6px 16px;display:inline-block;font-size:14px;color:var(--ouro);margin-bottom:8px
+  }
+  .modal-bg{position:fixed;inset:0;background:rgba(8,4,18,.8);z-index:50;display:none;align-items:center;justify-content:center;padding:20px}
+  .modal-bg.show{display:flex}
+  .modal{background:linear-gradient(160deg,#2a1a4f,#1a1033);border:2px solid var(--ouro);border-radius:20px;max-width:420px;padding:26px;text-align:center;box-shadow:var(--sombra)}
+  .modal .simbolo{font-size:64px}
+  .modal h3{color:var(--ouro);font-size:24px;margin:6px 0}
+  .modal .naipe{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ametista-claro);margin-bottom:10px}
+  .modal .fechar{margin-top:18px}
+</style>
+</head>
+<body>
+<div class="ceu" id="ceu"></div>
+
+<header>
+  <span class="lua">🌙</span>
+  <h1>Tarô da Prosperidade</h1>
+  <p>Desperte a abundância que já existe em você ✨</p>
+</header>
+
+<main>
+  <!-- ====== INÍCIO / CARTA DO DIA ====== -->
+  <section id="inicio" class="ativa">
+    <div class="centro"><span class="streak" id="streak"></span></div>
+    <h2 class="titulo-secao">Sua Carta do Dia</h2>
+    <p class="sub">Uma mensagem de prosperidade escolhida especialmente para hoje. Toque na carta para revelar.</p>
+    <div class="carta-area">
+      <div class="col">
+        <div class="carta" id="cartaDia" onclick="revelarDia()">
+          <div class="carta-inner">
+            <div class="face verso"><div class="selo">✨</div><small>PROSPERIDADE</small></div>
+            <div class="face frente" id="diaFrente"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="leituraDia"></div>
+  </section>
+
+  <!-- ====== TIRAGENS ====== -->
+  <section id="tiragens">
+    <h2 class="titulo-secao">Tiragens da Riqueza</h2>
+    <p class="sub">Escolha uma jornada para iluminar sua vida financeira.</p>
+
+    <div class="centro">
+      <button class="btn" onclick="iniciarTiragem('tres')">💰 Caminho do Dinheiro (3 cartas)</button>
+    </div>
+    <div class="centro">
+      <button class="btn sec" onclick="iniciarTiragem('prosperidade')">🌟 Mapa da Prosperidade (5 cartas)</button>
+    </div>
+
+    <div id="areaTiragem"></div>
+    <div id="leituraTiragem"></div>
+  </section>
+
+  <!-- ====== BIBLIOTECA ====== -->
+  <section id="biblioteca">
+    <h2 class="titulo-secao">As Cartas da Abundância</h2>
+    <p class="sub">Conheça o significado de cada carta para a sua prosperidade. Toque para ler.</p>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <!-- ====== AFIRMAÇÕES ====== -->
+  <section id="afirmacoes">
+    <h2 class="titulo-secao">Afirmações de Abundância</h2>
+    <p class="sub">Repita em voz alta, com a mão no coração. Você merece prosperar.</p>
+    <div class="afirma">
+      <div class="aspas">“</div>
+      <p id="textoAfirma"></p>
+      <div class="aspas" style="transform:rotate(180deg)">“</div>
+    </div>
+    <div class="centro"><button class="btn" onclick="novaAfirma()">🔮 Nova afirmação</button></div>
+  </section>
+
+  <!-- ====== DIÁRIO ====== -->
+  <section id="diario">
+    <h2 class="titulo-secao">Meu Diário de Prosperidade</h2>
+    <p class="sub">Anote suas reflexões, gratidões e conquistas. Sua jornada fica guardada aqui.</p>
+    <div class="diario-form">
+      <textarea id="entradaTexto" placeholder="Hoje sou grata por... / O que senti com minha carta foi..."></textarea>
+      <div class="centro"><button class="btn" onclick="salvarEntrada()">📖 Guardar no diário</button></div>
+    </div>
+    <div id="listaDiario"></div>
+  </section>
+</main>
+
+<!-- modal carta da biblioteca -->
+<div class="modal-bg" id="modalBg" onclick="fecharModal(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="simbolo" id="mSimbolo"></div>
+    <h3 id="mNome"></h3>
+    <div class="naipe" id="mNaipe"></div>
+    <p id="mSig" style="margin-bottom:14px"></p>
+    <div class="leitura" style="margin:0"><div class="conselho"><b>Conselho:</b> <span id="mConselho"></span></div></div>
+    <div class="fechar"><button class="btn sec" onclick="fecharModal()">Fechar</button></div>
+  </div>
+</div>
+
+<nav>
+  <button class="on" data-sec="inicio" onclick="irPara('inicio',this)"><span class="ic">🌙</span>Hoje</button>
+  <button data-sec="tiragens" onclick="irPara('tiragens',this)"><span class="ic">🔮</span>Tiragens</button>
+  <button data-sec="biblioteca" onclick="irPara('biblioteca',this)"><span class="ic">🃏</span>Cartas</button>
+  <button data-sec="afirmacoes" onclick="irPara('afirmacoes',this)"><span class="ic">✨</span>Afirmar</button>
+  <button data-sec="diario" onclick="irPara('diario',this)"><span class="ic">📖</span>Diário</button>
+</nav>
+
+<script>
+/* ============ BARALHO DA PROSPERIDADE ============ */
+const baralho = [
+  // ---- Arcanos Maiores (foco financeiro) ----
+  {n:"O Louco",e:"🃏",naipe:"Arcano Maior",sig:"Um novo começo financeiro bate à sua porta. É hora de confiar e dar o primeiro passo, mesmo sem ver o caminho todo.",c:"Permita-se recomeçar. Nem todo risco é perigo — alguns são portais para a abundância."},
+  {n:"O Mago",e:"🪄",naipe:"Arcano Maior",sig:"Você tem todos os recursos e talentos necessários para manifestar prosperidade agora.",c:"Pare de esperar. O poder de criar sua riqueza já está em suas mãos."},
+  {n:"A Sacerdotisa",e:"🌙",naipe:"Arcano Maior",sig:"Sua intuição sabe o melhor caminho para o dinheiro. Ouça o silêncio antes de decidir.",c:"Confie no seu pressentimento sobre uma oportunidade. Ele raramente erra."},
+  {n:"A Imperatriz",e:"👑",naipe:"Arcano Maior",sig:"Abundância que floresce! Tudo que você cuida com amor tende a crescer e dar frutos.",c:"Nutra seus projetos e seu dinheiro com carinho. A fartura responde ao cuidado."},
+  {n:"O Imperador",e:"🏛️",naipe:"Arcano Maior",sig:"Estrutura e disciplina constroem fortunas. Organize suas finanças com firmeza.",c:"Crie um plano e siga com autoridade. Você é a chefe da sua prosperidade."},
+  {n:"O Hierofante",e:"📜",naipe:"Arcano Maior",sig:"Um bom conselho ou conhecimento tradicional pode multiplicar seus recursos.",c:"Procure quem já trilhou esse caminho. Sabedoria também é riqueza."},
+  {n:"Os Enamorados",e:"💞",naipe:"Arcano Maior",sig:"Uma escolha importante ou parceria definirá seu futuro financeiro.",c:"Una-se a quem soma. Escolha com o coração e a razão juntos."},
+  {n:"O Carro",e:"🛡️",naipe:"Arcano Maior",sig:"Determinação te leva à vitória. Avance com foco e os obstáculos cederão.",c:"Mantenha as rédeas firmes na sua meta. A conquista está próxima."},
+  {n:"A Força",e:"🦁",naipe:"Arcano Maior",sig:"Coragem suave vence. A persistência tranquila supera qualquer dificuldade de dinheiro.",c:"Não desista. Sua força interior é maior que qualquer crise."},
+  {n:"O Eremita",e:"🕯️",naipe:"Arcano Maior",sig:"Momento de refletir e planejar com sabedoria antes de investir.",c:"Recolha-se para pensar. A clareza vem na quietude."},
+  {n:"A Roda da Fortuna",e:"🎡",naipe:"Arcano Maior",sig:"A sorte está girando a seu favor! Um ciclo de prosperidade começa.",c:"Aproveite a maré boa. O que parecia parado volta a se mover."},
+  {n:"A Justiça",e:"⚖️",naipe:"Arcano Maior",sig:"Equilíbrio e honestidade trazem recompensa justa. Contratos e acordos favorecem você.",c:"Aja com integridade. O que é seu por direito chegará."},
+  {n:"O Enforcado",e:"🙃",naipe:"Arcano Maior",sig:"Veja sua situação financeira por um novo ângulo. Uma pausa revela soluções.",c:"Solte o controle por um instante. A resposta está numa nova perspectiva."},
+  {n:"A Morte",e:"🦋",naipe:"Arcano Maior",sig:"Fim de um ciclo financeiro e renascimento. O velho sai para o novo prosperar.",c:"Deixe ir o que não serve mais. Toda transformação abre espaço para a riqueza."},
+  {n:"A Temperança",e:"🏺",naipe:"Arcano Maior",sig:"Moderação e equilíbrio no orçamento trazem estabilidade duradoura.",c:"Nem gastar demais, nem prender demais. O fluxo equilibrado é próspero."},
+  {n:"O Diabo",e:"⛓️",naipe:"Arcano Maior",sig:"Cuidado com apegos, dívidas e gastos que aprisionam. Você pode se libertar.",c:"Reconheça o que te prende ao medo da falta. A liberdade financeira começa na mente."},
+  {n:"A Torre",e:"🗼",naipe:"Arcano Maior",sig:"Uma mudança súbita pode abalar, mas limpa o terreno para algo mais sólido.",c:"Não tema o que cai. Sobre as ruínas, você construirá algo melhor."},
+  {n:"A Estrela",e:"⭐",naipe:"Arcano Maior",sig:"Esperança e inspiração renovadas. A abundância está a caminho — confie.",c:"Mantenha a fé. Seus melhores dias financeiros ainda estão por vir."},
+  {n:"A Lua",e:"🌕",naipe:"Arcano Maior",sig:"Cuidado com ilusões e promessas fáceis de dinheiro. Nem tudo é o que parece.",c:"Investigue antes de confiar. Deixe a névoa passar antes de decidir."},
+  {n:"O Sol",e:"☀️",naipe:"Arcano Maior",sig:"Sucesso, alegria e prosperidade plena! Tudo brilha na sua vida financeira.",c:"Celebre suas conquistas. Este é um tempo de fartura e luz."},
+  {n:"O Julgamento",e:"📯",naipe:"Arcano Maior",sig:"Um chamado para renascer financeiramente. Recompensas por esforços passados chegam.",c:"Responda ao chamado de uma vida mais próspera. Sua hora chegou."},
+  {n:"O Mundo",e:"🌍",naipe:"Arcano Maior",sig:"Realização total! Um ciclo se completa com plenitude e conquista.",c:"Você chegou lá. Reconheça sua vitória e celebre a abundância conquistada."},
+
+  // ---- Naipe de Ouros (Prosperidade material) ----
+  {n:"Ás de Ouros",e:"🪙",naipe:"Ouros",sig:"Uma nova oportunidade financeira de ouro surge. A semente da riqueza foi plantada.",c:"Agarre essa chance. Grandes fortunas começam com um único 'sim'."},
+  {n:"Dois de Ouros",e:"♻️",naipe:"Ouros",sig:"Você equilibra muitas responsabilidades. Flexibilidade é sua aliada agora.",c:"Mantenha o jogo de cintura. Você consegue administrar tudo com leveza."},
+  {n:"Três de Ouros",e:"🛠️",naipe:"Ouros",sig:"Colaboração e bom trabalho constroem prosperidade. Seu esforço é reconhecido.",c:"Una talentos. Juntos, vocês edificam algo valioso."},
+  {n:"Quatro de Ouros",e:"🔒",naipe:"Ouros",sig:"Segurança e economia, mas cuidado com o apego excessivo ao dinheiro.",c:"Guarde com sabedoria, mas permita que o dinheiro também circule e cresça."},
+  {n:"Cinco de Ouros",e:"❄️",naipe:"Ouros",sig:"Um momento de aperto, mas a ajuda está mais perto do que você imagina.",c:"Não enfrente sozinha. Peça apoio — a porta da abundância está aberta."},
+  {n:"Seis de Ouros",e:"🤲",naipe:"Ouros",sig:"O fluxo de dar e receber se equilibra. Generosidade retorna multiplicada.",c:"Compartilhe o que tem. A abundância flui por mãos generosas."},
+  {n:"Sete de Ouros",e:"🌱",naipe:"Ouros",sig:"Paciência! Seus investimentos estão amadurecendo. A colheita se aproxima.",c:"Não arranque a planta antes do tempo. O que você semeou vai render."},
+  {n:"Oito de Ouros",e:"🔨",naipe:"Ouros",sig:"Dedicação e aprimoramento. Seu empenho transforma talento em renda.",c:"Continue se aperfeiçoando. A maestria abre as portas da fartura."},
+  {n:"Nove de Ouros",e:"🍇",naipe:"Ouros",sig:"Independência e conforto financeiro conquistados pelo seu próprio mérito.",c:"Desfrute do que construiu. Você merece esse bem-estar."},
+  {n:"Dez de Ouros",e:"🏰",naipe:"Ouros",sig:"Riqueza duradoura e legado familiar. Prosperidade que se estende às gerações.",c:"Pense no longo prazo. Você está construindo um patrimônio que perdura."},
+  {n:"Valete de Ouros",e:"📨",naipe:"Ouros",sig:"Notícias financeiras animadoras ou um novo projeto promissor chegando.",c:"Fique atenta às novidades. Uma proposta valiosa pode aparecer."},
+  {n:"Cavaleiro de Ouros",e:"🐎",naipe:"Ouros",sig:"Trabalho constante e responsável traz resultados sólidos e confiáveis.",c:"Siga firme, passo a passo. A constância é o segredo da riqueza real."},
+  {n:"Rainha de Ouros",e:"👸",naipe:"Ouros",sig:"Prosperidade acolhedora e prática. Você cuida bem de si e dos seus, com fartura.",c:"Você é a senhora da abundância. Nutra sua casa e seu dinheiro com sabedoria."},
+  {n:"Rei de Ouros",e:"🤴",naipe:"Ouros",sig:"Mestria e sucesso financeiro. Segurança conquistada com experiência e disciplina.",c:"Lidere sua vida financeira com confiança. Você domina a arte de prosperar."}
+];
+
+/* ============ AFIRMAÇÕES ============ */
+const afirmacoes = [
+  "Eu sou um ímã para a prosperidade e a abundância.",
+  "O dinheiro flui para minha vida de formas fáceis e constantes.",
+  "Eu mereço viver com fartura, conforto e tranquilidade.",
+  "A cada dia, minha vida financeira fica mais próspera.",
+  "Eu confio na sabedoria que me guia rumo à riqueza.",
+  "A abundância do universo é minha, e eu a recebo com gratidão.",
+  "Quanto mais eu agradeço, mais motivos para agradecer eu recebo.",
+  "Eu solto o medo da falta e abraço a certeza da prosperidade.",
+  "Minhas mãos são abençoadas e tudo que toco prospera.",
+  "Eu sou digna de toda a abundância que a vida me oferece.",
+  "A prosperidade é meu estado natural. Eu me permito florescer.",
+  "Novas oportunidades de prosperar chegam a mim todos os dias."
+];
+
+/* ============ NAVEGAÇÃO ============ */
+function irPara(id,btn){
+  document.querySelectorAll('section').forEach(s=>s.classList.remove('ativa'));
+  document.getElementById(id).classList.add('ativa');
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ============ UTIL ============ */
+function sorteia(){ return baralho[Math.floor(Math.random()*baralho.length)]; }
+function sorteiaVarias(qtd){
+  const copia=[...baralho], saida=[];
+  for(let i=0;i<qtd;i++){ saida.push(copia.splice(Math.floor(Math.random()*copia.length),1)[0]); }
+  return saida;
+}
+function hoje(){ return new Date().toISOString().slice(0,10); }
+
+/* ============ CARTA DO DIA ============ */
+let cartaDiaObj=null, diaRevelado=false;
+function prepararDia(){
+  const salvo=JSON.parse(localStorage.getItem('cartaDia')||'null');
+  if(salvo && salvo.data===hoje()){
+    cartaDiaObj=salvo.carta;
+  }else{
+    cartaDiaObj=sorteia();
+    localStorage.setItem('cartaDia',JSON.stringify({data:hoje(),carta:cartaDiaObj}));
+    atualizarStreak();
+  }
+  document.getElementById('diaFrente').innerHTML=faceFrente(cartaDiaObj);
+  // se já revelou hoje, mostra revelada
+  if(localStorage.getItem('reveladoDia')===hoje()) revelarDia(true);
+}
+function revelarDia(jaFoi){
+  const c=document.getElementById('cartaDia');
+  if(!diaRevelado){ c.classList.add('virada'); diaRevelado=true; localStorage.setItem('reveladoDia',hoje()); }
+  document.getElementById('leituraDia').innerHTML=blocoLeitura(cartaDiaObj,"Mensagem de hoje");
+}
+function faceFrente(c){
+  return `<div class="simbolo">${c.e}</div><div class="nome">${c.n}</div><div class="naipe">${c.naipe}</div>`;
+}
+function blocoLeitura(c,titulo){
+  return `<div class="leitura">
+    <h3>${c.e} ${c.n}</h3>
+    <div class="naipe" style="font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ametista-claro);margin-bottom:10px">${c.naipe}</div>
+    <div class="sig">${c.sig}</div>
+    <div class="conselho"><b>✨ Conselho:</b> ${c.c}</div>
+  </div>`;
+}
+
+/* ============ STREAK (dias seguidos) ============ */
+function atualizarStreak(){
+  const dados=JSON.parse(localStorage.getItem('streak')||'{"dias":0,"ultimo":""}');
+  const ontem=new Date(Date.now()-86400000).toISOString().slice(0,10);
+  if(dados.ultimo===hoje()) {/*já contou*/}
+  else if(dados.ultimo===ontem){ dados.dias++; dados.ultimo=hoje(); }
+  else { dados.dias=1; dados.ultimo=hoje(); }
+  localStorage.setItem('streak',JSON.stringify(dados));
+}
+function mostrarStreak(){
+  const dados=JSON.parse(localStorage.getItem('streak')||'{"dias":0}');
+  const d=dados.dias||1;
+  document.getElementById('streak').textContent=`🔥 ${d} ${d===1?'dia':'dias'} cultivando sua prosperidade`;
+}
+
+/* ============ TIRAGENS ============ */
+const posicoes={
+  tres:["Passado financeiro","Presente financeiro","Futuro financeiro"],
+  prosperidade:["Onde você está","O que te bloqueia","Oportunidade oculta","Ação recomendada","Resultado provável"]
+};
+function iniciarTiragem(tipo){
+  const labels=posicoes[tipo];
+  const cartas=sorteiaVarias(labels.length);
+  const area=document.getElementById('areaTiragem');
+  document.getElementById('leituraTiragem').innerHTML='';
+  let html='<div class="carta-area">';
+  labels.forEach((lb,i)=>{
+    html+=`<div class="col">
+      <div class="pos-label">${lb}</div>
+      <div class="carta" id="tc${i}" onclick="virarTiragem(${i})">
+        <div class="carta-inner">
+          <div class="face verso"><div class="selo">✨</div><small>REVELAR</small></div>
+          <div class="face frente">${faceFrente(cartas[i])}</div>
+        </div>
+      </div>
+    </div>`;
+  });
+  html+='</div><div class="centro" style="margin-top:6px"><button class="btn sec" onclick="virarTodas('+labels.length+')">Revelar todas</button></div>';
+  area.innerHTML=html;
+  window._tiragemAtual={tipo,labels,cartas,viradas:0};
+  area.scrollIntoView({behavior:'smooth'});
+}
+function virarTiragem(i){
+  const c=document.getElementById('tc'+i);
+  if(c.classList.contains('virada'))return;
+  c.classList.add('virada');
+  window._tiragemAtual.viradas++;
+  if(window._tiragemAtual.viradas===window._tiragemAtual.labels.length) mostrarLeituraTiragem();
+}
+function virarTodas(n){
+  for(let i=0;i<n;i++){ const c=document.getElementById('tc'+i); if(!c.classList.contains('virada'))c.classList.add('virada'); }
+  window._tiragemAtual.viradas=n; mostrarLeituraTiragem();
+}
+function mostrarLeituraTiragem(){
+  const {labels,cartas}=window._tiragemAtual;
+  let html='<div class="leitura"><h3>🔮 Sua Leitura</h3>';
+  labels.forEach((lb,i)=>{
+    html+=`<div style="margin-bottom:14px">
+      <div style="color:var(--ouro);font-weight:700">${lb}: ${cartas[i].e} ${cartas[i].n}</div>
+      <div>${cartas[i].sig}</div>
+      <div style="font-style:italic;color:var(--texto-suave);margin-top:2px">↳ ${cartas[i].c}</div>
+    </div>`;
+  });
+  html+='</div>';
+  document.getElementById('leituraTiragem').innerHTML=html;
+  document.getElementById('leituraTiragem').scrollIntoView({behavior:'smooth'});
+}
+
+/* ============ BIBLIOTECA ============ */
+function montarGrid(){
+  const g=document.getElementById('grid');
+  g.innerHTML=baralho.map((c,i)=>`<div class="mini" onclick="abrirModal(${i})"><div class="e">${c.e}</div><div class="n">${c.n}</div></div>`).join('');
+}
+function abrirModal(i){
+  const c=baralho[i];
+  document.getElementById('mSimbolo').textContent=c.e;
+  document.getElementById('mNome').textContent=c.n;
+  document.getElementById('mNaipe').textContent=c.naipe;
+  document.getElementById('mSig').textContent=c.sig;
+  document.getElementById('mConselho').textContent=c.c;
+  document.getElementById('modalBg').classList.add('show');
+}
+function fecharModal(ev){ document.getElementById('modalBg').classList.remove('show'); }
+
+/* ============ AFIRMAÇÕES ============ */
+function novaAfirma(){
+  let nova;
+  do{ nova=afirmacoes[Math.floor(Math.random()*afirmacoes.length)]; }while(nova===document.getElementById('textoAfirma').textContent);
+  document.getElementById('textoAfirma').textContent=nova;
+}
+
+/* ============ DIÁRIO ============ */
+function salvarEntrada(){
+  const t=document.getElementById('entradaTexto').value.trim();
+  if(!t)return;
+  const lista=JSON.parse(localStorage.getItem('diario')||'[]');
+  lista.unshift({data:new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'}),texto:t});
+  localStorage.setItem('diario',JSON.stringify(lista));
+  document.getElementById('entradaTexto').value='';
+  renderDiario();
+}
+function apagarEntrada(i){
+  const lista=JSON.parse(localStorage.getItem('diario')||'[]');
+  lista.splice(i,1); localStorage.setItem('diario',JSON.stringify(lista)); renderDiario();
+}
+function renderDiario(){
+  const lista=JSON.parse(localStorage.getItem('diario')||'[]');
+  const el=document.getElementById('listaDiario');
+  if(!lista.length){ el.innerHTML='<div class="vazio">Seu diário está em branco. Comece a registrar sua jornada de prosperidade. 🌱</div>'; return; }
+  el.innerHTML=lista.map((e,i)=>`<div class="entrada"><button class="apagar" onclick="apagarEntrada(${i})">apagar</button><div class="data">📅 ${e.data}</div><div class="corpo">${e.texto.replace(/</g,'&lt;')}</div></div>`).join('');
+}
+
+/* ============ ESTRELAS DE FUNDO ============ */
+function semearCeu(){
+  const ceu=document.getElementById('ceu');
+  for(let i=0;i<45;i++){
+    const s=document.createElement('span');
+    const t=Math.random()*3+1;
+    s.style.width=s.style.height=t+'px';
+    s.style.left=Math.random()*100+'%';
+    s.style.top=Math.random()*100+'%';
+    s.style.animationDelay=Math.random()*3+'s';
+    ceu.appendChild(s);
+  }
+}
+
+/* ============ INIT ============ */
+window.onload=function(){
+  semearCeu();
+  prepararDia();
+  mostrarStreak();
+  montarGrid();
+  novaAfirma();
+  renderDiario();
+};
+</script>
+</body>
+</html>

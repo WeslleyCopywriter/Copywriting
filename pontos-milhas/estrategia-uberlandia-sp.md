@@ -70,6 +70,23 @@ Cenário com R$ 5.000/mês no cartão, em 6 meses:
 
 Com R$ 10.000/mês no cartão: a anuidade cai para R$ 52,50, o cartão turbinado rende 8.636 milhas/mês, e o total em 6 meses passa de 67.000 milhas por cerca de R$ 816. Isso paga em torno de 11 trechos fora de promoção.
 
+## 3.1 Quanto custa tudo por ano e a partir de que gasto compensa
+
+Custos anuais (cartão + Clube LATAM Pass Base + Clube Livelo Classic com bônus):
+
+| Sua fatura mensal | Anuidade do cartão | Clube LATAM Pass | Clube Livelo | Total/ano | Total/mês |
+|---|---|---|---|---|---|
+| Até R$ 10 mil | R$ 1.260 | R$ 490,80 | R$ 511,80 | R$ 2.262,60 | R$ 188,55 |
+| R$ 10 mil a 20 mil | R$ 630 | R$ 490,80 | R$ 511,80 | R$ 1.632,60 | R$ 136,05 |
+| Acima de R$ 20 mil | R$ 0 | R$ 490,80 | R$ 511,80 | R$ 1.002,60 | R$ 83,55 |
+
+Ponto de equilíbrio de cada peça (milha avaliada a R$ 25, o valor-alvo de 2026):
+
+- **Clube Livelo**: não depende do cartão. R$ 511,80 viram 31.250 milhas LATAM (com 25% de bônus), que valem R$ 781. Compensa sempre.
+- **Clube LATAM Pass Base**: compensa a partir de cerca de R$ 2.100 de gasto mensal no cartão. Abaixo disso, as milhas extras do turbo não cobrem os R$ 40,90.
+- **Anuidade do cartão + clube juntos**: pela conta conservadora (R$ 25 por mil), o par se paga a partir de cerca de R$ 6.300 por mês de fatura. Contando o que a milha realmente economiza no trecho UDI–SP (cerca de R$ 43 por mil, pois 6.000 milhas + R$ 40 de taxa substituem um trecho de R$ 300), o par se paga a partir de cerca de R$ 3.700 por mês. Acima de R$ 10 mil a anuidade cai pela metade e a conta fecha com folga.
+- Sem clube, o cartão sozinho só paga a anuidade em milhas com fatura acima de R$ 9.200 por mês. Por isso o clube é o que faz o cartão valer.
+
 ## 4. Táticas do dia a dia
 
 1. Concentre tudo no cartão: contas, assinaturas, mercado, combustível. Pague as mensalidades dos clubes com ele.

@@ -138,6 +138,9 @@
   .allergen.done{background:var(--green-soft); border-color:var(--green); color:var(--green-dark)}
   .allergen .ck{width:20px; height:20px; border-radius:6px; border:2px solid var(--line); display:flex; align-items:center; justify-content:center; font-size:13px; flex-shrink:0}
   .allergen.done .ck{background:var(--green-dark); border-color:var(--green-dark); color:#fff}
+  .allergen .al-txt{display:flex; flex-direction:column; gap:1px; line-height:1.18; min-width:0}
+  .allergen .al-age{font-size:10.5px; font-weight:600; color:var(--muted)}
+  .allergen.done .al-age{color:var(--green-dark); opacity:.85}
 
   .empty{text-align:center; padding:44px 20px; color:var(--muted)}
   .empty .em{font-size:52px; margin-bottom:12px}
@@ -269,7 +272,7 @@
 
     <div class="section-label">🥚 Alergênicos introduzidos</div>
     <div class="card">
-      <div class="lead">Marque os principais alergênicos conforme forem introduzidos — um de cada vez, de manhã, e observe por 2-3 dias.</div>
+      <div class="lead">Cronograma da bebê: 🥚 <b>ovo</b> já iniciado; os demais <b>até os 9 meses</b>; e 🥜 <b>amendoim só aos 10 meses</b>. Introduza um de cada vez, de manhã, observe por 2-3 dias e depois mantenha na rotina 2-3x/semana. Toque para marcar conforme for introduzindo.</div>
       <div class="allergen-grid" id="allergenGrid"></div>
     </div>
 
@@ -337,15 +340,15 @@ function save(){ localStorage.setItem(LS_KEY, JSON.stringify(DB)); }
 
 /* ============ ALERGÊNICOS ============ */
 var ALLERGENS = [
-  {id:'ovo', label:'🥚 Ovo'},
-  {id:'amendoim', label:'🥜 Amendoim'},
-  {id:'castanhas', label:'🌰 Castanhas'},
-  {id:'leite', label:'🥛 Leite / laticínios'},
-  {id:'trigo', label:'🌾 Trigo / glúten'},
-  {id:'peixe', label:'🐟 Peixe'},
-  {id:'frutos_mar', label:'🦐 Frutos do mar'},
-  {id:'soja', label:'🫘 Soja'},
-  {id:'gergelim', label:'⚪ Gergelim'}
+  {id:'ovo', label:'🥚 Ovo', age:'a partir de 6 meses'},
+  {id:'leite', label:'🥛 Leite / laticínios', age:'até 9 meses'},
+  {id:'trigo', label:'🌾 Trigo / glúten', age:'até 9 meses'},
+  {id:'peixe', label:'🐟 Peixe', age:'até 9 meses'},
+  {id:'castanhas', label:'🌰 Castanhas', age:'até 9 meses'},
+  {id:'frutos_mar', label:'🦐 Frutos do mar', age:'até 9 meses'},
+  {id:'soja', label:'🫘 Soja', age:'até 9 meses'},
+  {id:'gergelim', label:'⚪ Gergelim', age:'até 9 meses'},
+  {id:'amendoim', label:'🥜 Amendoim', age:'🗓️ só aos 10 meses'}
 ];
 
 /* ============ SUGESTÕES DE ALIMENTOS ============ */
@@ -364,7 +367,7 @@ var TIPS = [
   {i:'🧂', t:'<b>Sem sal e sem açúcar</b> — o paladar está se formando.'},
   {i:'👀', t:'<b>Sempre supervisionada</b> ao comer. Nunca deixe sozinha.'},
   {i:'😮', t:'<b>Engasgo x GAG:</b> ânsia (GAG) é normal e faz parte do aprendizado; engasgo real (sem som, roxinha) é emergência.'},
-  {i:'🥜', t:'<b>Alergênicos cedo:</b> ovo, amendoim etc. podem ser introduzidos já no começo, um por vez e pela manhã.'},
+  {i:'🥜', t:'<b>Alergênicos:</b> introduza um por vez, de manhã, e <b>mantenha na rotina 2-3x/semana</b> depois de aceitar — é a exposição regular que protege. Amendoim, conforme orientação, aos 10 meses.'},
   {i:'💧', t:'<b>Água</b> em pequenos goles pode ser oferecida junto das refeições.'},
   {i:'📏', t:'<b>Corte seguro:</b> nada redondo e firme inteiro (uva, tomate cereja) — corte no comprimento.'},
   {i:'⏳', t:'<b>Paciência:</b> recusar não é "não gostar". Pode levar muitas ofertas até aceitar.'}
@@ -616,7 +619,8 @@ function renderPlan(){
   var ag=document.getElementById('allergenGrid');
   ag.innerHTML=ALLERGENS.map(function(a){
     var done=!!DB.allergens[a.id];
-    return '<div class="allergen'+(done?' done':'')+'" onclick="toggleAllergen(\''+a.id+'\')"><div class="ck">'+(done?'✓':'')+'</div>'+a.label+'</div>';
+    var sub=done?('✅ '+fmtDate(DB.allergens[a.id])):(a.age||'');
+    return '<div class="allergen'+(done?' done':'')+'" onclick="toggleAllergen(\''+a.id+'\')"><div class="ck">'+(done?'✓':'')+'</div><div class="al-txt"><span class="al-name">'+a.label+'</span>'+(sub?'<span class="al-age">'+sub+'</span>':'')+'</div></div>';
   }).join('');
 
   document.getElementById('tipsCard').innerHTML=TIPS.map(function(t){
